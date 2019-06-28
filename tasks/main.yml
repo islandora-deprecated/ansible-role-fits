@@ -24,3 +24,8 @@
     - fits
     - fits-install
   
+- include: install-fits.yml
+  tags:
+    - fits
+    - fits-install
+  
