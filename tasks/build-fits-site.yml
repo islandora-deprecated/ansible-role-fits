@@ -61,6 +61,7 @@
   with_items:
     - absent
     - directory
+  ignore_errors: yes
 
 - name: Change CrayFits directory ownership, group and permissions
   file:
