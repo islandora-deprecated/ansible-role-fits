@@ -61,6 +61,7 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: '0755'
+    recurse: True
 
 - name: Adding port 8050 for Fits
   lineinfile:
@@ -79,3 +80,4 @@
     command: update
     working_dir: /var/www/html/CrayFits
   ignore_errors: yes
+  become_user: "{{ ansible_user }}"
