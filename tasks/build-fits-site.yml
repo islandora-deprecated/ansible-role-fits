@@ -49,6 +49,13 @@
 - name: Install Islandora FITS module
   command: "{{ drush_path }} --root {{ drupal_core_path }} -y en islandora_fits"
 
+- name: Clean Directory
+  file:
+    path: '/var/www/html/CrayFits'
+  with_items:
+    - absent
+    - directory
+
 - name: Install FITS Microservice from Github
   git:
     repo: https://github.com/roblib/CrayFits.git
@@ -74,12 +81,6 @@
     name: apache2
     state: restarted
   become: true
-- name: Clean Directory
-  file:
-    path: '/var/www/html/CrayFits/vendor/monolog'
-  with_items:
-    - absent
-    - directory
 
 - name: Run Composer On Fits Microservice
   composer:
