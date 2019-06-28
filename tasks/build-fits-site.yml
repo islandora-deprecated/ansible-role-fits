@@ -74,6 +74,12 @@
     name: apache2
     state: restarted
   become: true
+- name: Clean Directory
+  file:
+    path: '/var/www/html/CrayFits/vendor/monolog'
+  with_items:
+    - absent
+    - directory
 
 - name: Run Composer On Fits Microservice
   composer:
