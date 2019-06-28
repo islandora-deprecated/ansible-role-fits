@@ -1,0 +1,87 @@
+- name: Build site for FITS microservice
+  blockinfile:
+    path: "/etc/apache2/sites-available/CrayFits.conf"
+    create: yes
+    block: |
+      <VirtualHost *:8050>
+      ServerName fits.dev
+      DocumentRoot "/var/www/html/CrayFits/public"
+      <Directory /var/www/html/CrayFits/public>
+      Options Indexes FollowSymLinks MultiViews
+      AllowOverride All
+      Order allow,deny
+      Allow from all
+      </Directory>
+      ErrorLog /var/log/apache2/crayfits_error.log
+      CustomLog /var/log/apache2/crayfits_access.log combined
+      </VirtualHost>
+
+- name: Enable FITS site
+  file:
+    src: "/etc/apache2/sites-available/CrayFits.conf"
+    dest: "/etc/apache2/sites-enabled/CrayFits.conf"
+    state: link
+
+- name: Change owner on html dir
+  file:
+    path: /var/www/html
+    owner: www-data
+    group: www-data
+
+- name: Allow url rewriting
+  replace:
+    path: "/etc/apache2/apache2.conf"
+    regexp: '<Directory /var/www/>[\s\S]*?<\/Directory>'
+    replace: |
+      <Directory /var/www/>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+      </Directory>
+
+
+- hosts: webserver
+  become: yes
+
+  # add some vars here so we can run with --start-at-task if desired 
+  tasks:
+
+    - name: Download islandora FITS module
+      composer:
+        command: require
+        arguments: islandora-rdm/islandora_fits
+        working_dir: "{{ drupal_core_path }}/.."
+      become_user: "{{ ansible_user }}"
+
+    - name: Install Islandora FITS module
+      command: "{{ drush_path }} --root {{ drupal_core_path }} -y en islandora_fits"
+
+    - name: Install FITS Microservice from Github
+      git:
+        repo: https://github.com/roblib/CrayFits.git
+        dest: /var/www/html/CrayFits
+
+    - name: Change CrayFits directory ownership, group and permissions
+      file:
+        path: /var/www/html/CrayFits
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+
+    - name: Adding port 8050 for Fits
+      lineinfile:
+        path: "/etc/apache2/ports.conf"
+        line: "Listen 8050"
+        insertafter: "Listen 8000"
+       
+    - name: Restart apache
+      service:
+        name: apache2
+        state: restarted
+      become: true
+
+    - name: Run Composer On Fits Microservice
+      composer:
+        command: update
+        working_dir: /var/www/html/CrayFits
+      ignore_errors: yes
