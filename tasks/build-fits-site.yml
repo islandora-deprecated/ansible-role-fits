@@ -91,9 +91,15 @@
     state: restarted
   become: true
 
+- name: Check for Existing microservice
+  stat:
+    path: /var/www/html/CrayFits/vendor
+  register: crayfits
+
 - name: Run Composer On Fits Microservice
   composer:
     command: update
     working_dir: /var/www/html/CrayFits
   ignore_errors: yes
+  when: crayfits.stat.exists == False
   become_user: "{{ ansible_user }}"
