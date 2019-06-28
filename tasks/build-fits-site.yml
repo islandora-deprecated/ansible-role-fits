@@ -55,7 +55,7 @@
     dest: /var/www/html/CrayFits
     force: yes
 
-- name: Clean Directory
+- name: Clean Directory (Failure okay)
   file:
     path: '/var/www/html/CrayFits/vendor/symfony/monolog-bundle'
   with_items:
@@ -69,6 +69,14 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: '0755'
+    recurse: True
+
+- name: Open file for logging
+  file:
+    path: /var/www/html/CrayFits/var
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0777'
     recurse: True
 
 - name: Adding port 8050 for Fits
