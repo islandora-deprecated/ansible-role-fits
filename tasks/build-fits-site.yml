@@ -53,6 +53,7 @@
   git:
     repo: https://github.com/roblib/CrayFits.git
     dest: /var/www/html/CrayFits
+    force: yes
 
 - name: Change CrayFits directory ownership, group and permissions
   file:
