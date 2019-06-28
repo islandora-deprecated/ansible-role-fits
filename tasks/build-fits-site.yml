@@ -49,18 +49,18 @@
 - name: Install Islandora FITS module
   command: "{{ drush_path }} --root {{ drupal_core_path }} -y en islandora_fits"
 
-- name: Clean Directory
-  file:
-    path: '/var/www/html/CrayFits'
-  with_items:
-    - absent
-    - directory
-
 - name: Install FITS Microservice from Github
   git:
     repo: https://github.com/roblib/CrayFits.git
     dest: /var/www/html/CrayFits
     force: yes
+
+- name: Clean Directory
+  file:
+    path: '/var/www/html/CrayFits/vendor/symfony/monolog-bundle'
+  with_items:
+    - absent
+    - directory
 
 - name: Change CrayFits directory ownership, group and permissions
   file:
