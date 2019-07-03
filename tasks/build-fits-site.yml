@@ -1,25 +1,20 @@
 - name: Build site for FITS microservice
   blockinfile:
-    path: "/etc/apache2/sites-available/CrayFits.conf"
+    path: "/etc/apache2/conf-available/CrayFits.conf"
     create: yes
     block: |
-      <VirtualHost *:8050>
-      ServerName fits.dev
-      DocumentRoot "/var/www/html/CrayFits/public"
-      <Directory /var/www/html/CrayFits/public>
-      Options Indexes FollowSymLinks MultiViews
-      AllowOverride All
-      Order allow,deny
-      Allow from all
+      Alias "/crayfits" "/var/www/html/CrayFits/public"
+      <Directory "/var/www/html/CrayFits/public">
+        FallbackResource /index.php
+        Require all granted
+        DirectoryIndex index.php
+        SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
       </Directory>
-      ErrorLog /var/log/apache2/crayfits_error.log
-      CustomLog /var/log/apache2/crayfits_access.log combined
-      </VirtualHost>
 
 - name: Enable FITS site
   file:
-    src: "/etc/apache2/sites-available/CrayFits.conf"
-    dest: "/etc/apache2/sites-enabled/CrayFits.conf"
+    src: "/etc/apache2/conf-available/CrayFits.conf"
+    dest: "/etc/apache2/conf-enabled/CrayFits.conf"
     state: link
 
 - name: Change owner on html dir
@@ -27,17 +22,6 @@
     path: /var/www/html
     owner: www-data
     group: www-data
-
-- name: Allow url rewriting
-  replace:
-    path: "/etc/apache2/apache2.conf"
-    regexp: '<Directory /var/www/>[\s\S]*?<\/Directory>'
-    replace: |
-      <Directory /var/www/>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-      </Directory>
 
 - name: Download islandora FITS module
   composer:
@@ -78,12 +62,6 @@
     group: "{{ ansible_user }}"
     mode: '0777'
     recurse: True
-
-- name: Adding port 8050 for Fits
-  lineinfile:
-    path: "/etc/apache2/ports.conf"
-    line: "Listen 8050"
-    insertafter: "Listen 8000"
 
 - name: Restart apache
   service:
