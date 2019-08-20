@@ -9,4 +9,4 @@ fits_user: tomcat8
 fits_group: tomcat8
 fits_ws: yes
 crayfits_home: /var/www/html
-
+webserver_app_user: "{% if ansible_os_family == 'RedHat' %}apache{% else %}www-data{% endif %}"

@@ -15,6 +15,7 @@
   file:
     src: "{{ httpd_conf_directory }}/conf-available/CrayFits.conf"
     dest: "{{ httpd_conf_directory }}/conf-enabled/CrayFits.conf"
+    dest: "{{ httpd_conf_directory }}/conf-enabled/CrayFits.conf"
     state: link
 
 - name: Change owner on html dir
