@@ -20,8 +20,8 @@
 - name: Change owner on html dir
   file:
     path: /var/www/html
-    owner: {{ webserver_app_user }}
-    group: {{ webserver_app_user }}
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
 
 - name: Download islandora FITS module
   composer:
@@ -36,12 +36,12 @@
 - name: Install FITS Microservice from Github
   git:
     repo: https://github.com/roblib/CrayFits.git
-    dest: {{ crayfits_home }}/CrayFits
+    dest: "{{ crayfits_home }}/CrayFits"
     force: yes
 
 - name: Clean Directory (Failure okay)
   file:
-    path: '{{ crayfits_home }}/CrayFits/vendor/symfony/monolog-bundle'
+    path: "{{ crayfits_home }}/CrayFits/vendor/symfony/monolog-bundle"
   with_items:
     - absent
     - directory
@@ -49,7 +49,7 @@
 
 - name: Change CrayFits directory ownership, group and permissions
   file:
-    path: {{ crayfits_home }}/CrayFits
+    path: "{{ crayfits_home }}/CrayFits"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: '0755'
@@ -57,7 +57,7 @@
 
 - name: Open file for logging
   file:
-    path: {{ crayfits_home }}/CrayFits/var
+    path: "{{ crayfits_home }}/CrayFits/var"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: '0777'
@@ -71,13 +71,13 @@
 
 - name: Check for Existing microservice
   stat:
-    path: {{ crayfits_home }}/CrayFits/vendor
+    path: "{{ crayfits_home }}/CrayFits/vendor"
   register: crayfits
 
 - name: Run Composer On Fits Microservice
   composer:
     command: update
-    working_dir: {{ crayfits_home }}/CrayFits
+    working_dir: "{{ crayfits_home }}/CrayFits"
   ignore_errors: yes
   when: crayfits.stat.exists == False
   become_user: "{{ ansible_user }}"
