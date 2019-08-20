@@ -3,8 +3,8 @@
     path: "{{ httpd_conf_directory }}/conf-available/CrayFits.conf"
     create: yes
     block: |
-      Alias "/crayfits" "/var/www/html/CrayFits/public"
-      <Directory "/var/www/html/CrayFits/public">
+      Alias "/crayfits" "{{ crayfits_home }}/CrayFits/public"
+      <Directory "{{ crayfits_home }}/CrayFits/public">
         FallbackResource /index.php
         Require all granted
         DirectoryIndex index.php
