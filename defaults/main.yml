@@ -8,3 +8,5 @@ fits_install_symlink: /opt/fits
 fits_user: tomcat8
 fits_group: tomcat8
 fits_ws: yes
+crayfits_home: /var/www/html
+
