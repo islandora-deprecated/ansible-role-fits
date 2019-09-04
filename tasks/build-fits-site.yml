@@ -20,19 +20,9 @@
 
 - name: Change owner on html dir
   file:
-    path: /var/www/html
+    path: {{ crayfits_home }}
     owner: "{{ webserver_app_user }}"
     group: "{{ webserver_app_user }}"
-
-- name: Download islandora FITS module
-  composer:
-    command: require
-    arguments: islandora-rdm/islandora_fits
-    working_dir: "{{ drupal_core_path }}/.."
-  become_user: "{{ ansible_user }}"
-
-- name: Install Islandora FITS module
-  command: "{{ drush_path }} --root {{ drupal_core_path }} -y en islandora_fits"
 
 - name: Install FITS Microservice from Github
   git:
@@ -51,16 +41,16 @@
 - name: Change CrayFits directory ownership, group and permissions
   file:
     path: "{{ crayfits_home }}/CrayFits"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
     mode: '0755'
     recurse: True
 
 - name: Open file for logging
   file:
     path: "{{ crayfits_home }}/CrayFits/var"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
     mode: '0777'
     recurse: True
 
@@ -81,4 +71,4 @@
     working_dir: "{{ crayfits_home }}/CrayFits"
   ignore_errors: yes
   when: crayfits.stat.exists == False
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_ssh_user }}"
