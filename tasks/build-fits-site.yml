@@ -20,7 +20,7 @@
 
 - name: Change owner on html dir
   file:
-    path: {{ crayfits_home }}
+    path: "{{ crayfits_home }}"
     owner: "{{ webserver_app_user }}"
     group: "{{ webserver_app_user }}"
 
