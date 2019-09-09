@@ -12,4 +12,4 @@ fits_src_url: "https://github.com/harvard-lts/fits/releases/download/1.4.1/fits-
 webserver_app_user: "{% if ansible_os_family == 'RedHat' %}apache{% else %}www-data{% endif %}"
 fits_zip_md5sum: "md5: 670dd59b1369548cd478ce5acb5d7579"
 fits_ws_md5sum: "md5: 1d5cc215e0e8f4809cfb2d41a63ba4b8"
-vagrant_user: "{% if ansible_os_family == 'RedHat' %}vagrant{% else %}ubuntu{% endif %}"
+vagrant_ssh_user: "{% if ansible_os_family == 'RedHat' %}vagrant{% else %}ubuntu{% endif %}"

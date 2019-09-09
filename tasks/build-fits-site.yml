@@ -72,3 +72,13 @@
   ignore_errors: yes
   when: crayfits.stat.exists == False
   become_user: "{{ ansible_ssh_user }}"
+
+- name: Download Islandora FITS
+  composer:
+    command: require
+    arguments: islandora-rdm/islandora_fits
+    working_dir: "{{ drupal_core_path }}/.."
+
+- name: Enable Islansdora FITS
+  command: "{{ drush_path }} --root {{ drupal_core_path }} -y en islandora_fits"
+  
