@@ -5,7 +5,7 @@
     block: |
       Alias "/crayfits" "{{ crayfits_home }}/CrayFits/public"
       <Directory "{{ crayfits_home }}/CrayFits/public">
-        FallbackResource /index.php
+        FallbackResource /crayfits/index.php
         Require all granted
         DirectoryIndex index.php
         SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
@@ -14,7 +14,6 @@
 - name: Enable FITS site
   file:
     src: "{{ httpd_conf_directory }}/conf-available/CrayFits.conf"
-    dest: "{{ httpd_conf_directory }}/conf-enabled/CrayFits.conf"
     dest: "{{ httpd_conf_directory }}/conf-enabled/CrayFits.conf"
     state: link
 
@@ -41,16 +40,16 @@
 - name: Change CrayFits directory ownership, group and permissions
   file:
     path: "{{ crayfits_home }}/CrayFits"
-    owner: "{{ ansible_ssh_user }}"
-    group: "{{ ansible_ssh_user }}"
+    owner: "{{ vagrant_ssh_user }}"
+    group: "{{ vagrant_ssh_user }}"
     mode: '0755'
     recurse: True
 
 - name: Open file for logging
   file:
     path: "{{ crayfits_home }}/CrayFits/var"
-    owner: "{{ ansible_ssh_user }}"
-    group: "{{ ansible_ssh_user }}"
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
     mode: '0777'
     recurse: True
 
@@ -71,7 +70,7 @@
     working_dir: "{{ crayfits_home }}/CrayFits"
   ignore_errors: yes
   when: crayfits.stat.exists == False
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ vagrant_ssh_user }}"
 
 - name: Download Islandora FITS
   composer:
@@ -81,4 +80,3 @@
 
 - name: Enable Islansdora FITS
   command: "{{ drush_path }} --root {{ drupal_core_path }} -y en islandora_fits"
-  
