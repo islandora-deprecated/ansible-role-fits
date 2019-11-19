@@ -40,8 +40,8 @@
 - name: Change CrayFits directory ownership, group and permissions
   file:
     path: "{{ crayfits_home }}/CrayFits"
-    owner: "{{ vagrant_ssh_user }}"
-    group: "{{ vagrant_ssh_user }}"
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
     mode: '0755'
     recurse: True
 
