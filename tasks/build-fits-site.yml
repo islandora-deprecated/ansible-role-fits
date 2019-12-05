@@ -14,7 +14,7 @@
 - name: Enable FITS site
   file:
     src: "{{ httpd_conf_directory }}/conf-available/CrayFits.conf"
-    dest: "{{ httpd_conf_directory }}/conf-enabled/CrayFits.conf"
+    dest: "{{ httpd_conf_directory_enabled}}/CrayFits.conf"
     state: link
 
 - name: Change owner on html dir
@@ -40,8 +40,8 @@
 - name: Change CrayFits directory ownership, group and permissions
   file:
     path: "{{ crayfits_home }}/CrayFits"
-    owner: "{{ vagrant_ssh_user }}"
-    group: "{{ vagrant_ssh_user }}"
+    owner: "{{ webserver_app_user }}"
+    group: "{{ webserver_app_user }}"
     mode: '0755'
     recurse: True
 
@@ -53,11 +53,10 @@
     mode: '0777'
     recurse: True
 
-- name: Restart apache
+- name: restart apache
   service:
-    name: apache2
+    name: "{{ apache_service }}"
     state: restarted
-  become: true
 
 - name: Check for Existing microservice
   stat:
@@ -70,7 +69,7 @@
     working_dir: "{{ crayfits_home }}/CrayFits"
   ignore_errors: yes
   when: crayfits.stat.exists == False
-  become_user: "{{ vagrant_ssh_user }}"
+  become: true
 
 - name: Download Islandora FITS
   composer:
