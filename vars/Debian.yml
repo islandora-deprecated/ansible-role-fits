@@ -1,0 +1,5 @@
+---
+
+httpd_conf_directory_enabled: "{{httpd_conf_directory}}/conf-enabled"
+apache_service: apache2
+  apache_restart_state
