@@ -1,11 +1,13 @@
-# Ansible Role: FITS
+Ansible Role: FITS
+==================
 
 An Ansible role that installs [FITS](https://projects.iq.harvard.edu/fits) on:
 
 * Centos/RHEL 7.x
 * Ubuntu Xenial
 
-## Role Variables
+Role Variables
+--------------
 
 Available variables are listed below, along with default values:
 
@@ -36,8 +38,8 @@ fits_install_symlink: /opt/fits
 
 User/group to install as:
 ```
-fits_user: tomcat8
-fits_group: tomcat8
+fits_user: tomcat
+fits_group: tomcat
 ```
 
 Install the FITS web service in Tomcat
@@ -45,16 +47,20 @@ Install the FITS web service in Tomcat
 fits_ws: yes
 ```
 
-## Dependencies
+Dependencies
+------------
 
-* Tomcat
+* nycrecords.tomcat
+* nycrecords.java
   
-## Example Playbook
+Example Playbook
+----------------
 
     - hosts: webservers
       roles:
-        - { role: islandora.fits }
+        - { role: nycrecords.fits }
 
-## License
+License
+--------------
 
 MIT

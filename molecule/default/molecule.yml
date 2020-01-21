@@ -1,0 +1,28 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: instance
+    box: ${VAGRANT_DEFAULT_BOX:-generic/rhel7}
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  playbooks:
+    converge: converge.yml
+    cleanup: cleanup.yml
+  inventory:
+    host_vars:
+      instance:
+        environment: vagrant
+verifier:
+  name: testinfra
+  directory: ../resources/tests/
+  lint:
+    name: flake8
