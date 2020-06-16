@@ -8,11 +8,11 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_fits_install_dir_exists(host):
-    assert host.file("/opt/fits").exists
+    assert host.file("/opt/fits-1.5.0").is_directory
 
 
 def test_fits_executable(host):
-    output = host.check_output("/opt/fits/fits.sh -h")
+    output = host.check_output("/opt/fits-1.5.0/fits.sh -h")
 
     assert (
         """usage: fits

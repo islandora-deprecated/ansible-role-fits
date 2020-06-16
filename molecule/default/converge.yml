@@ -17,6 +17,9 @@
     # Role: java
     java_home: /usr/lib/jvm/java-1.8.0-openjdk.x86_64
 
+    # Role: Fits
+    fits_install_symlink: /usr/local/bin/fits.sh
+
   roles:
     - role: nycrecords.rhsm
     - role: nycrecords.java
