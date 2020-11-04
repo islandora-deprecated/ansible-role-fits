@@ -11,3 +11,14 @@
     path: "{{ tomcat8_home }}/conf/catalina.properties"
     line: 'shared.loader=${fits.home}/lib/*.jar'
   notify: restart tomcat8
+
+- name: Wait for FITS to finish coming back up
+  wait_for:
+    path: "{{ tomcat8_home }}/webapps/fits/WEB-INF/classes"
+    state: present
+
+- name: Configure FITS web service logging
+  template:
+    src: log4j.properties.j2
+    dest: "{{ tomcat8_home }}/webapps/fits/WEB-INF/classes/log4j.properties"
+  notify: restart tomcat8
