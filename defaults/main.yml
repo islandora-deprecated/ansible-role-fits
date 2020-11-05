@@ -7,7 +7,7 @@ fits_install_symlink: /opt/fits
 fits_user: tomcat8
 fits_group: tomcat8
 fits_ws: yes
-fits_log_path: /var/log/tomcat8
+fits_log_path: "{% if ansible_os_family == 'RedHat' %}/opt/tomcat/logs{% else %}/var/log/tomcat8{% endif %}"
 crayfits_home: /var/www/html
 fits_src_url: "https://github.com/harvard-lts/fits/releases/download/{{ fits_version }}/fits-{{ fits_version }}.zip"
 fits_zip_md5sum: "md5: 670dd59b1369548cd478ce5acb5d7579"
