@@ -1,5 +1,9 @@
 ---
 
+# Include OS specific variables
+- name: include OS specific variables
+  include_vars: "vars/{{ ansible_os_family }}.yml"
+
 - include: install.yml
   tags:
     - fits
@@ -18,9 +22,8 @@
     - fits-ws
     - fits-ws-config
   when: fits_ws
-  
+
 - include: build-fits-site.yml
   tags:
     - fits
     - fits-install
-
