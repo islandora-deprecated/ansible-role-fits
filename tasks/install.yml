@@ -1,6 +1,6 @@
 ---
 
-- name: create Fits destination dir
+- name: create FITS destination dir
   file:
     path: "{{ fits_install_root }}/fits-{{ fits_version }}"
     state: directory
