@@ -36,8 +36,8 @@ fits_install_symlink: /opt/fits
 
 User/group to install as:
 ```
-fits_user: tomcat8
-fits_group: tomcat8
+fits_user: tomcat
+fits_group: tomcat
 ```
 
 Install the FITS web service in Tomcat

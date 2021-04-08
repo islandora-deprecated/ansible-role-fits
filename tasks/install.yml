@@ -4,8 +4,8 @@
   file:
     path: "{{ fits_install_root }}/fits-{{ fits_version }}"
     state: directory
-    owner: tomcat8
-    group: tomcat8
+    owner: tomcat
+    group: tomcat
     mode: 0700
 
 - name: Downloading FITS executables
